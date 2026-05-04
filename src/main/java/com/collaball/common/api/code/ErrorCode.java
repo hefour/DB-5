@@ -15,7 +15,7 @@ public enum ErrorCode {
     // 인증
     INVALID_TOKEN("AUTH_401", "유효하지 않은 토큰입니다.", HttpStatus.UNAUTHORIZED),
     EXPIRED_TOKEN("AUTH_402", "만료된 토큰입니다.", HttpStatus.UNAUTHORIZED),
-    UNAUTHORIZED("AUTH_403", "접근 권한이 없습니다.", HttpStatus.FORBIDDEN),
+    FORBIDDEN("AUTH_403", "접근 권한이 없습니다.", HttpStatus.FORBIDDEN),
     LOGIN_FAILED("AUTH_404", "이메일 또는 비밀번호가 올바르지 않습니다.", HttpStatus.UNAUTHORIZED),
 
     // 유저
