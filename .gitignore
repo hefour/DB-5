@@ -40,6 +40,10 @@ out/
 application-local.yml
 .env
 
+### Postman ###
+.postman/
+postman/
+
 ### Mac ###
 .DS_Store
 
