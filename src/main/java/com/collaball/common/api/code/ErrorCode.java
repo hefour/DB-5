@@ -22,6 +22,13 @@ public enum ErrorCode {
     USER_NOT_FOUND("USER_404", "사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     DUPLICATE_EMAIL("USER_409", "이미 사용 중인 이메일입니다.", HttpStatus.CONFLICT),
 
+    // 이메일 인증
+    INVALID_EMAIL_DOMAIN("EMAIL_400", "@soongsil.ac.kr 이메일만 가입 가능합니다.", HttpStatus.BAD_REQUEST),
+    VERIFICATION_CODE_NOT_FOUND("EMAIL_404", "인증 요청을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    VERIFICATION_CODE_EXPIRED("EMAIL_400_02", "인증 코드가 만료되었습니다.", HttpStatus.BAD_REQUEST),
+    VERIFICATION_CODE_MISMATCH("EMAIL_400_03", "인증 코드가 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
+    EMAIL_NOT_VERIFIED("EMAIL_401", "이메일 인증이 완료되지 않았습니다.", HttpStatus.UNAUTHORIZED),
+
     // 프로젝트
     PROJECT_NOT_FOUND("PROJECT_404", "프로젝트를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     PROJECT_ACCESS_DENIED("PROJECT_403", "프로젝트에 대한 접근 권한이 없습니다.", HttpStatus.FORBIDDEN),
