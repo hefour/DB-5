@@ -3,8 +3,10 @@ package com.collaball.domain.auth.controller;
 import com.collaball.common.api.code.ResponseCode;
 import com.collaball.common.api.response.ApiResponse;
 import com.collaball.domain.auth.dto.LoginRequest;
+import com.collaball.domain.auth.dto.SendEmailRequest;
 import com.collaball.domain.auth.dto.SignupRequest;
 import com.collaball.domain.auth.dto.TokenResponse;
+import com.collaball.domain.auth.dto.VerifyCodeRequest;
 import com.collaball.domain.auth.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+
+    @PostMapping("/email/send")
+    public ResponseEntity<ApiResponse<Void>> sendEmail(@Valid @RequestBody SendEmailRequest request) {
+        authService.sendVerificationEmail(request);
+        return ApiResponse.ok(ResponseCode.EMAIL_SENT);
+    }
+
+    @PostMapping("/email/verify")
+    public ResponseEntity<ApiResponse<Void>> verifyEmail(@Valid @RequestBody VerifyCodeRequest request) {
+        authService.verifyCode(request);
+        return ApiResponse.ok(ResponseCode.EMAIL_VERIFIED);
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse<Void>> signup(@Valid @RequestBody SignupRequest request) {
