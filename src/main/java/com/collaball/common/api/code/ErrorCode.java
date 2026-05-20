@@ -36,6 +36,7 @@ public enum ErrorCode {
 
     // 태스크
     TASK_NOT_FOUND("TASK_404", "태스크를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+    ASSIGNEE_NOT_PROJECT_MEMBER("TASK_400", "담당자는 프로젝트 멤버여야 합니다.", HttpStatus.BAD_REQUEST),
 
     // 평가
     EVALUATION_NOT_FOUND("EVAL_404", "평가를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),

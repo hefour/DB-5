@@ -40,7 +40,7 @@ public class TaskService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
         Task task = Task.create(project, request.title(), request.description());
         taskRepository.save(task);
-        List<User> assignees = saveAssignees(task, request.assigneeIds());
+        List<User> assignees = saveAssignees(task, projectId, request.assigneeIds());
         return TaskResponse.of(task, assignees);
     }
 
@@ -64,7 +64,7 @@ public class TaskService {
         Task task = getTaskInProject(taskId, projectId);
         task.update(request.title(), request.description());
         taskAssignRepository.deleteByTaskId(taskId);
-        List<User> assignees = saveAssignees(task, request.assigneeIds());
+        List<User> assignees = saveAssignees(task, projectId, request.assigneeIds());
         return TaskResponse.of(task, assignees);
     }
 
@@ -112,13 +112,18 @@ public class TaskService {
         return task;
     }
 
-    private List<User> saveAssignees(Task task, List<Long> assigneeIds) {
+    private List<User> saveAssignees(Task task, Long projectId, List<Long> assigneeIds) {
         if (assigneeIds == null || assigneeIds.isEmpty()) {
             return List.of();
         }
         return assigneeIds.stream()
-                .map(userId -> userRepository.findById(userId)
-                        .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND)))
+                .map(userId -> {
+                    if (!teamMemberRepository.existsByProjectIdAndUserId(projectId, userId)) {
+                        throw new BusinessException(ErrorCode.ASSIGNEE_NOT_PROJECT_MEMBER);
+                    }
+                    return userRepository.findById(userId)
+                            .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+                })
                 .peek(user -> taskAssignRepository.save(TaskAssign.of(task, user)))
                 .toList();
     }
