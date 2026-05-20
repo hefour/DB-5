@@ -1,0 +1,26 @@
+package com.collaball.domain.team.repository;
+
+import com.collaball.domain.project.entity.Project;
+import com.collaball.domain.team.entity.TeamMember;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+
+public interface TeamMemberRepository extends JpaRepository<TeamMember, Long> {
+
+    @Query("""
+            select distinct p
+            from TeamMember tm
+            join tm.project p
+            join fetch p.owner
+            where tm.user.id = :userId
+            order by p.createdAt desc
+            """)
+    List<Project> findParticipatingProjects(@Param("userId") Long userId);
+
+    boolean existsByProjectIdAndUserId(Long projectId, Long userId);
+
+    void deleteByProjectId(Long projectId);
+}
