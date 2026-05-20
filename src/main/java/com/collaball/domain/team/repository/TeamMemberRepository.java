@@ -21,4 +21,6 @@ public interface TeamMemberRepository extends JpaRepository<TeamMember, Long> {
     List<Project> findParticipatingProjects(@Param("userId") Long userId);
 
     boolean existsByProjectIdAndUserId(Long projectId, Long userId);
+
+    void deleteByProjectId(Long projectId);
 }

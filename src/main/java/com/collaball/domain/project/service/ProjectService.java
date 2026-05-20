@@ -53,6 +53,7 @@ public class ProjectService {
     @Transactional
     public void deleteProject(Long projectId, User currentUser) {
         Project project = getProjectWithEditPermission(projectId, currentUser);
+        teamMemberRepository.deleteByProjectId(projectId);
         projectRepository.delete(project);
     }
 
