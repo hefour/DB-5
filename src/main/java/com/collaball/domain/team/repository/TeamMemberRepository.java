@@ -2,6 +2,7 @@ package com.collaball.domain.team.repository;
 
 import com.collaball.domain.project.entity.Project;
 import com.collaball.domain.team.entity.TeamMember;
+import com.collaball.domain.team.entity.TeamMemberRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,6 +22,8 @@ public interface TeamMemberRepository extends JpaRepository<TeamMember, Long> {
     List<Project> findParticipatingProjects(@Param("userId") Long userId);
 
     boolean existsByProjectIdAndUserId(Long projectId, Long userId);
+
+    boolean existsByProjectIdAndUserIdAndRole(Long projectId, Long userId, TeamMemberRole role);
 
     void deleteByProjectId(Long projectId);
 }
