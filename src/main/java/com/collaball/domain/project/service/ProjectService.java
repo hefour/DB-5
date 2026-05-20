@@ -68,6 +68,22 @@ public class ProjectService {
         projectRepository.delete(project);
     }
 
+    public String getInviteCode(Long projectId, User currentUser) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
+        if (!teamMemberRepository.existsByProjectIdAndUserIdAndRole(projectId, currentUser.getId(), com.collaball.domain.team.entity.TeamMemberRole.LEADER)) {
+            throw new BusinessException(ErrorCode.PROJECT_ACCESS_DENIED);
+        }
+        return project.getInviteCode();
+    }
+
+    @Transactional
+    public String regenerateInviteCode(Long projectId, User currentUser) {
+        Project project = getProjectWithEditPermission(projectId, currentUser);
+        project.regenerateInviteCode();
+        return project.getInviteCode();
+    }
+
     private Project getProjectWithViewPermission(Long projectId, User currentUser) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.PROJECT_NOT_FOUND));
